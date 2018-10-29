@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.entity.Orders">
+	<resultMap type="orders" id="ordersMap">
+		<id property="ordersid" column="ordersid" />
+		<result property="ordercode" column="ordercode" />
+		<result property="usersid" column="usersid" />
+		<result property="driversid" column="driversid" />
+		<result property="thestart" column="thestart" />
+		<result property="theend" column="theend" />
+		<result property="theremark" column="theremark" />
+		<result property="thestartlng" column="thestartlng" />
+		<result property="thestartlat" column="thestartlat" />
+		<result property="theendlng" column="theendlng" />
+		<result property="theendlat" column="theendlat" />
+		<result property="gotime" column="gotime" />
+		<result property="addtime" column="addtime" />
+		<result property="money" column="money" />
+		<result property="status" column="status" />
+		<result property="username" column="username" />
+		<result property="contact" column="contact" />
+		<result property="tel" column="tel" />
+		<result property="callname" column="callname" />
+		<result property="delstatus" column="delstatus" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertOrders" parameterType="orders">
+		insert into
+		orders(ordersid , ordercode , usersid , driversid , thestart , theend , theremark , 
+		thestartlng , thestartlat , theendlng ,theendlat , gotime , callname ,
+		addtime , money , status , contact , tel ,delstatus) 
+		values(#{ordersid} , #{ordercode} , #{usersid} , #{driversid} ,
+		#{thestart} , #{theend} , #{theremark} , 
+		#{thestartlng} , #{thestartlat} , #{theendlng} , #{theendlat} , #{gotime} ,
+		#{callname} , #{addtime} , #{money} ,#{status} , #{contact} , #{tel} ,#{delstatus})
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateOrders" parameterType="orders">
+		update orders set
+		ordercode=#{ordercode} , usersid=#{usersid} , driversid=#{driversid} ,
+		thestart=#{thestart} ,
+		theend=#{theend} , addtime=#{addtime} , gotime=#{gotime} ,
+		money=#{money} ,
+		status=#{status} , tel = #{tel} ,  delstatus = #{delstatus} where ordersid=#{ordersid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteOrders" parameterType="String">
+		delete from orders where
+		ordersid = #{ordersid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllOrders" resultMap="ordersMap">
+		select a.* , b.username ,
+		b.contact from
+		orders a , users b where a.usersid = b.usersid order by
+		ordersid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getOrdersById" parameterType="String" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid =
+		b.usersid and ordersid=#{ordersid}  
+	</select>
+	
+	<!-- 按ordercode查询 DAO通过ordercode调用此配置 -->
+	<select id="getOrdersByCode" parameterType="String" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid =
+		b.usersid and ordercode=#{ordercode} 
+	</select>
+
+	<select id="getOrdersByDriver" parameterType="String" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid =
+		b.usersid and ordercode in (#{ordercode})
+	</select>
+	
+	<select id="getOrdersByDriversId" parameterType="String" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid =
+		b.usersid and driversid in (#{driversid})
+	</select>
+	
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getOrdersByCond" parameterType="orders" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid = b.usersid
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode = #{ordercode}
+		</if>
+		<if test="usersid != null and '' != usersid">
+			and a.usersid = #{usersid}
+		</if>
+		<if test="driversid != null and '' != driversid">
+			and a.driversid = #{driversid}
+		</if>
+		<if test="thestart != null and '' != thestart">
+			and a.thestart = #{thestart}
+		</if>
+		<if test="theend != null and '' != theend">
+			and a.theend = #{theend}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+		<if test="money != null and '' != money">
+			and a.money = #{money}
+		</if>
+		<if test="status != null and '' != status">
+			and a.status = #{status}
+		</if>
+		<if test="delstatus != null and '' != delstatus">
+			and a.delstatus != #{delstatus}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getOrdersByLike" parameterType="orders" resultMap="ordersMap">
+		select a.* , b.username , b.contact from orders a , users b where
+		a.usersid =
+		b.usersid
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode like CONCAT('%', CONCAT(#{ordercode},
+			'%'))
+		</if>
+		<if test="usersid != null and '' != usersid">
+			and a.usersid like CONCAT('%', CONCAT(#{usersid}, '%'))
+		</if>
+		<if test="driversid != null and '' != driversid">
+			and a.driversid like CONCAT('%', CONCAT(#{driversid}, '%'))
+		</if>
+		<if test="thestart != null and '' != thestart">
+			and a.thestart like CONCAT('%', CONCAT(#{thestart}, '%'))
+		</if>
+		<if test="theend != null and '' != theend">
+			and a.theend like CONCAT('%', CONCAT(#{theend}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+		<if test="money != null and '' != money">
+			and a.money like CONCAT('%', CONCAT(#{money}, '%'))
+		</if>
+		<if test="status != null and '' != status">
+			and a.status like CONCAT('%', CONCAT(#{status}, '%'))
+		</if>
+	</select>
+</mapper>
+
+

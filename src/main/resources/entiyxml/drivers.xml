@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.entity.Drivers">
+	<resultMap type="drivers" id="driversMap">
+		<id property="driversid" column="driversid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="realname" column="realname" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="idcard" column="idcard" />
+		<result property="contact" column="contact" />
+		<result property="num" column="num" />
+		<result property="status" column="status" />
+		<result property="image" column="image" />
+		<result property="regdate" column="regdate" />
+		<result property="money" column="money" />
+		<result property="dcard" column="dcard" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertDrivers" parameterType="drivers">
+		insert into
+		drivers(driversid , username , password , realname , sex ,
+		birthday ,
+		idcard , contact , num , status , image , regdate,money,dcard )
+		values(#{driversid} , #{username} , #{password} , #{realname} , #{sex}
+		, #{birthday} , #{idcard} , #{contact} , #{num} , #{status} , #{image}
+		, #{regdate}, #{money}, #{dcard} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateDrivers" parameterType="drivers">
+		update drivers set
+		username=#{username} , password=#{password} ,
+		realname=#{realname} ,
+		sex=#{sex} , birthday=#{birthday} ,
+		idcard=#{idcard} ,
+		contact=#{contact} , num=#{num} , status=#{status}
+		, image=#{image} ,
+		regdate=#{regdate}, money=#{money}, dcard=#{dcard} 
+		where driversid=#{driversid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteDrivers" parameterType="String">
+		delete from drivers
+		where driversid = #{driversid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllDrivers" resultMap="driversMap">
+		select a.* from drivers a
+		order by driversid desc
+	</select>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllDriversNoS" resultMap="driversMap">
+		select a.* from drivers a where status="解锁"
+		order by driversid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getDriversById" parameterType="String" resultMap="driversMap">
+		select a.* from drivers a where driversid=#{driversid}
+	</select>
+
+	<select id="getDriversByRecommend" parameterType="String"
+		resultMap="driversMap">
+		select a.* from drivers a where status="解锁" order
+		by
+		num desc limit 4
+	</select>
+
+	<select id="getDriversByFront" parameterType="String" resultMap="driversMap">
+		select a.* from drivers a where status="解锁" order
+		by num desc limit 10
+	</select>
+
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getDriversByCond" parameterType="drivers" resultMap="driversMap">
+		select a.* from drivers a where 1=1
+		<if test="username != null and '' != username">
+			and a.username = #{username}
+		</if>
+		<if test="password != null and '' != password">
+			and a.password = #{password}
+		</if>
+		<if test="realname != null and '' != realname">
+			and a.realname = #{realname}
+		</if>
+		<if test="sex != null and '' != sex">
+			and a.sex = #{sex}
+		</if>
+		<if test="birthday != null and '' != birthday">
+			and a.birthday = #{birthday}
+		</if>
+		<if test="idcard != null and '' != idcard">
+			and a.idcard = #{idcard}
+		</if>
+		<if test="contact != null and '' != contact">
+			and a.contact = #{contact}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="status != null and '' != status">
+			and a.status = #{status}
+		</if>
+		<if test="image != null and '' != image">
+			and a.image = #{image}
+		</if>
+		<if test="regdate != null and '' != regdate">
+			and a.regdate = #{regdate}
+		</if>
+		<if test="money != null and '' != money">
+			and a.money = #{money}
+		</if>
+		<if test="dcard != null and '' != dcard">
+			and a.dcard = #{dcard}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getDriversByLike" parameterType="drivers" resultMap="driversMap">
+		select a.* from drivers a where 1=1
+		<if test="username != null and '' != username">
+			and a.username like CONCAT('%', CONCAT(#{username}, '%'))
+		</if>
+		<if test="password != null and '' != password">
+			and a.password like CONCAT('%', CONCAT(#{password}, '%'))
+		</if>
+		<if test="realname != null and '' != realname">
+			and a.realname like CONCAT('%', CONCAT(#{realname}, '%'))
+		</if>
+		<if test="sex != null and '' != sex">
+			and a.sex like CONCAT('%', CONCAT(#{sex}, '%'))
+		</if>
+		<if test="birthday != null and '' != birthday">
+			and a.birthday like CONCAT('%', CONCAT(#{birthday}, '%'))
+		</if>
+		<if test="idcard != null and '' != idcard">
+			and a.idcard like CONCAT('%', CONCAT(#{idcard}, '%'))
+		</if>
+		<if test="contact != null and '' != contact">
+			and a.contact like CONCAT('%', CONCAT(#{contact}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="status != null and '' != status">
+			and a.status like CONCAT('%', CONCAT(#{status}, '%'))
+		</if>
+		<if test="image != null and '' != image">
+			and a.image like CONCAT('%', CONCAT(#{image}, '%'))
+		</if>
+		<if test="regdate != null and '' != regdate">
+			and a.regdate like CONCAT('%', CONCAT(#{regdate}, '%'))
+		</if>
+	</select>
+</mapper>
+
+

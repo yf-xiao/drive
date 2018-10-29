@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="admin" type="com.entity.Admin" />
+        <typeAlias alias="article" type="com.entity.Article" />
+        <typeAlias alias="users" type="com.entity.Users" />
+        <typeAlias alias="drivers" type="com.entity.Drivers" />
+        <typeAlias alias="orders" type="com.entity.Orders" />
+        <typeAlias alias="details" type="com.entity.Details" />
+        <typeAlias alias="pay" type="com.entity.Pay" />
+        <typeAlias alias="topic" type="com.entity.Topic" />
+        <typeAlias alias="grievance" type="com.entity.Grievance" />
+        <typeAlias alias="applys" type="com.entity.Applys" />
+    </typeAliases>
+    <mappers>
+        <mapper resource="entiyxml/admin.xml" />
+        <mapper resource="entiyxml/article.xml" />
+        <mapper resource="entiyxml/users.xml" />
+        <mapper resource="entiyxml/drivers.xml" />
+        <mapper resource="entiyxml/orders.xml" />
+        <mapper resource="entiyxml/details.xml" />
+        <mapper resource="entiyxml/pay.xml" />
+        <mapper resource="entiyxml/topic.xml" />
+        <mapper resource="entiyxml/grievance.xml" />
+        <mapper resource="entiyxml/applys.xml" />
+    </mappers>
+</configuration>

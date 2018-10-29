@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.entity.Grievance">
+	<resultMap type="grievance" id="grievanceMap">
+		<id property="grievanceid" column="grievanceid" />
+		<result property="usersid" column="usersid" />
+		<result property="ordercode" column="ordercode" />
+		<result property="contents" column="contents" />
+		<result property="addtime" column="addtime" />
+		<result property="username" column="username" />
+		<result property="rep" column="rep" />
+		<result property="drivername" column="drivername" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertGrievance" parameterType="grievance">
+		insert into
+		grievance(grievanceid , usersid , ordercode , contents ,
+		addtime,drivername
+		)
+		values(#{grievanceid} , #{usersid} , #{ordercode} ,
+		#{contents} ,
+		#{addtime},#{drivername} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateGrievance" parameterType="grievance">
+		update grievance set
+		usersid=#{usersid} , ordercode=#{ordercode} ,
+		contents=#{contents} ,
+		addtime=#{addtime} ,rep = #{rep} where
+		grievanceid=#{grievanceid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteGrievance" parameterType="String">
+		delete from grievance
+		where grievanceid = #{grievanceid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllGrievance" resultMap="grievanceMap">
+		select a.* , b.username
+		from grievance a , users b where a.usersid = b.usersid order by
+		grievanceid desc
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getGrievanceById" parameterType="String" resultMap="grievanceMap">
+		select a.* , b.username from grievance a , users b where a.usersid =
+		b.usersid and a.grievanceid=#{grievanceid}
+	</select>
+	
+	<select id="getGrievanceByOrdercode" parameterType="String" resultMap="grievanceMap">
+		select a.* , b.username from grievance a , users b where a.usersid =
+		b.usersid and a.ordercode=#{ordercode}
+	</select>
+	
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getGrievanceByCond" parameterType="grievance"
+		resultMap="grievanceMap">
+		select a.* , b.username from grievance a , users b where a.usersid =
+		b.usersid
+		<if test="usersid != null and '' != usersid">
+			and a.usersid = #{usersid}
+		</if>
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode = #{ordercode}
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents = #{contents}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getGrievanceByLike" parameterType="grievance"
+		resultMap="grievanceMap">
+		select a.* , b.username from grievance a , users b where a.usersid =
+		b.usersid
+		<if test="usersid != null and '' != usersid">
+			and a.usersid like CONCAT('%', CONCAT(#{usersid}, '%'))
+		</if>
+		<if test="ordercode != null and '' != ordercode">
+			and a.ordercode like CONCAT('%', CONCAT(#{ordercode},
+			'%'))
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents like CONCAT('%', CONCAT(#{contents}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
